@@ -24,8 +24,8 @@
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd DeepCSAT-Predictor
+   git clone https://github.com/Sridevivaradharajan/CSAT-predictor
+   cd CSAT-Predictor
    ```
 2. Install required dependencies:
 
