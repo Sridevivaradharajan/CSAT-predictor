@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Prediction - CSAT Prediction System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-file-upload"></i> Bulk Prediction</h2>
+    <p>Upload CSV file to predict CSAT scores for multiple records</p>
+</div>
+
+{% if error %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> <strong>Error:</strong> {{ error }}
+    {% if validation_info and validation_info.missing_columns %}
+    <hr>
+    <p class="mb-2"><strong>Missing Columns:</strong></p>
+    <ul class="mb-0">
+        {% for col in validation_info.missing_columns %}
+        <li>{{ col }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}
+
+{% if validation_info and validation_info.status == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> <strong>Success!</strong> Processed {{ validation_info.total_records }} records successfully.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cloud-upload-alt"></i> Upload CSV File
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id="bulkForm">
+                    <div class="mb-3">
+                        <label class="form-label">Select CSV File</label>
+                        <input type="file" name="file" class="form-control" accept=".csv" required>
+                        <small class="text-muted">Maximum file size: 10MB | Supported format: CSV</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-upload"></i> Upload and Predict
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="loading mt-3" id="loadingIndicator">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Processing file and generating predictions...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-light">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-download"></i> Template
+            </div>
+            <div class="card-body text-center">
+                <i class="fas fa-file-csv fa-4x text-success mb-3"></i>
+                <p>Download the CSV template to see the required format</p>
+                <a href="/download_template" class="btn btn-success">
+                    <i class="fas fa-download"></i> Download Template
+                </a>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header bg-warning">
+                <i class="fas fa-list-check"></i> Required Columns
+            </div>
+            <div class="card-body">
+                <small>
+                    <ul class="mb-0" style="font-size: 0.85rem;">
+                        {% for col in required_columns %}
+                        <li>{{ col }}</li>
+                        {% endfor %}
+                    </ul>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if results %}
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-table"></i> Prediction Results ({{ results|length }} records)
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <button class="btn btn-success" onclick="exportToCSV()">
+                <i class="fas fa-file-download"></i> Export Results
+            </button>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Record #</th>
+                        <th>Predicted CSAT</th>
+                        <th>Confidence (%)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.id }}</td>
+                        <td>
+                            <span class="badge badge-csat-{{ result.csat }} fs-6">
+                                {{ result.csat }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar {% if result.confidence > 70 %}bg-success{% elif result.confidence > 50 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                     role="progressbar" style="width: {{ result.confidence }}%">
+                                    {{ "%.1f"|format(result.confidence) }}%
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {% if result.confidence > 70 %}
+                            <span class="badge bg-success">High Confidence</span>
+                            {% elif result.confidence > 50 %}
+                            <span class="badge bg-warning">Moderate</span>
+                            {% else %}
+                            <span class="badge bg-danger">Low Confidence</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-3">
+            <p class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                CSAT Scale: 1 (Very Dissatisfied) to 5 (Very Satisfied)
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="alert alert-success">
+            <h5 class="alert-heading"><i class="fas fa-chart-pie"></i> Summary Statistics</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Total Records:</strong> {{ results|length }}
+                </div>
+                <div class="col-md-3">
+                    <strong>Avg CSAT:</strong> 
+                    {{ "%.2f"|format(results|map(attribute='csat')|sum / results|length) }}
+                </div>
+                <div class="col-md-3">
+                    <strong>Avg Confidence:</strong> 
+                    {{ "%.1f"|format(results|map(attribute='confidence')|sum / results|length) }}%
+                </div>
+                <div class="col-md-3">
+                    <strong>High Scores (4-5):</strong> 
+                    {{ results|selectattr('csat', 'ge', 4)|list|length }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="alert alert-info mt-4">
+    <h5 class="alert-heading"><i class="fas fa-lightbulb"></i> Tips for Best Results</h5>
+    <ul class="mb-0">
+        <li><strong>Flexible Column Names:</strong> Don't worry about exact formatting! The system accepts "Channel Name", "channel_name", "CHANNEL NAME" - any format works!</li>
+        <li>Use the provided template to avoid formatting errors</li>
+        <li>Date/time fields should be in format: YYYY-MM-DD HH:MM:SS</li>
+        <li>Remove any special characters from text fields</li>
+        <li>The system can process up to 10,000 records at once</li>
+        <li><strong>NLP Processing:</strong> Customer remarks are analyzed for sentiment, polarity, and emotional intensity</li>
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('bulkForm').addEventListener('submit', function() {
+    document.getElementById('loadingIndicator').style.display = 'block';
+});
+
+function exportToCSV() {
+    const table = document.getElementById('resultsTable');
+    let csv = [];
+    
+    // Get headers
+    const headers = [];
+    for (let header of table.querySelectorAll('thead th')) {
+        headers.push(header.textContent.trim());
+    }
+    csv.push(headers.join(','));
+    
+    // Get rows
+    for (let row of table.querySelectorAll('tbody tr')) {
+        const rowData = [];
+        const cells = row.querySelectorAll('td');
+        rowData.push(cells[0].textContent.trim()); // Record #
+        rowData.push(cells[1].textContent.trim()); // CSAT
+        
+        // Extract confidence percentage
+        const confidenceText = cells[2].querySelector('.progress-bar').textContent.trim();
+        rowData.push(confidenceText.replace('%', '')); // Confidence
+        
+        rowData.push(cells[3].textContent.trim()); // Status
+        csv.push(rowData.join(','));
+    }
+    
+    // Download
+    const csvContent = csv.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'csat_predictions_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %}

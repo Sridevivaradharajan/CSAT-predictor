@@ -1,0 +1,8 @@
+Flask==2.3.2
+numpy>=1.26.0
+pandas>=2.1.1
+tensorflow==2.18.0
+joblib
+plotly
+textblob
+gunicorn

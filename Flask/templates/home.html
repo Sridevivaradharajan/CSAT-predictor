@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Home - CSAT Prediction System{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3">
+        <i class="fas fa-brain text-info"></i> CSAT Prediction System
+    </h1>
+    <p class="lead text-muted">AI-Powered Customer Satisfaction Score Prediction using Wide & Deep Neural Network</p>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-calculator fa-3x text-primary"></i>
+                </div>
+                <h5 class="card-title">Single Prediction</h5>
+                <p class="card-text">Predict CSAT score for individual customer interactions with instant results.</p>
+                <a href="/single" class="btn btn-primary mt-3">
+                    <i class="fas fa-arrow-right"></i> Get Started
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-file-upload fa-3x text-success"></i>
+                </div>
+                <h5 class="card-title">Bulk Prediction</h5>
+                <p class="card-text">Upload CSV files to predict CSAT scores for multiple records at once.</p>
+                <a href="/bulk" class="btn btn-success mt-3">
+                    <i class="fas fa-upload"></i> Upload CSV
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-star"></i> Key Features
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>High Accuracy:</strong> 71.91% exact match, 84.83% within-1 accuracy
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Fast Processing:</strong> Optimized Wide & Deep model for quick predictions
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Real-time Analysis:</strong> Instant CSAT score predictions with confidence levels
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Sentiment Analysis:</strong> Advanced text processing with TextBlob integration
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Bulk Processing:</strong> Handle hundreds of records in seconds
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <h5 class="alert-heading">
+                <i class="fas fa-info-circle"></i> Getting Started
+            </h5>
+            <p class="mb-0">
+                To make predictions, you'll need customer interaction data including remarks, timestamps, agent details, and category information. 
+                Download the <a href="/download_template" class="alert-link"><strong>CSV template</strong></a> to see the required format.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

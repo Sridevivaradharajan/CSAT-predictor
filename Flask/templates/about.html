@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}About - CSAT Prediction System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-info-circle"></i> About This System</h2>
+    <p>Learn more about the CSAT prediction technology and methodology</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-brain"></i> Model Information
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <i class="fas fa-network-wired fa-4x text-primary mb-3"></i>
+                        <h4>{{ model_info.name }}</h4>
+                    </div>
+                    <div class="col-md-9">
+                        <h5>Architecture Overview</h5>
+                        <p>{{ model_info.architecture }}</p>
+                        
+                        <div class="alert alert-info mt-3">
+                            <h6><i class="fas fa-magic"></i> Smart Input Handling</h6>
+                            <p class="mb-2">{{ model_info.flexibility }}</p>
+                            <p class="mb-0"><strong>Examples:</strong> "Channel Name", "channel_name", "CHANNEL NAME", "ChannelName" - all work!</p>
+                        </div>
+                        
+                        <div class="alert alert-success mt-3">
+                            <h6><i class="fas fa-comment-dots"></i> NLP Capabilities</h6>
+                            <p class="mb-0">{{ model_info.nlp_features }}</p>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h3 class="text-primary">71.91%</h3>
+                                        <p class="mb-0">Exact Accuracy</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h3 class="text-success">84.83%</h3>
+                                        <p class="mb-0">Within-1 Accuracy</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h3 class="text-info">{{ model_info.features }}</h3>
+                                        <p class="mb-0">Input Features</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <h6>Performance Metrics:</h6>
+                            <ul class="mb-0">
+                                <li><strong>F1-Score (Macro):</strong> 0.2504</li>
+                                <li><strong>F1-Score (Weighted):</strong> 0.6327</li>
+                                <li><strong>Test Accuracy:</strong> 71.91%</li>
+                                <li><strong>Within-1 Predictions:</strong> 84.83% (industry-leading for ordinal classification)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="fas fa-cogs"></i> How It Works
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li class="mb-3">
+                        <strong>Data Collection:</strong> Customer interaction data is collected including remarks, timestamps, agent details, and categories.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Feature Engineering:</strong> Advanced preprocessing extracts sentiment, temporal patterns, and agent performance metrics.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Neural Network Processing:</strong> The Wide & Deep model combines memorization and generalization for accurate predictions.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Prediction Output:</strong> System generates CSAT scores (1-5) with confidence levels for each prediction.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="fas fa-list-check"></i> Key Features
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Sentiment Analysis:</strong> TextBlob-powered analysis of customer remarks
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Temporal Features:</strong> Response time analysis and day-of-week patterns
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Agent Metrics:</strong> Performance tracking and consistency scoring
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Category Intelligence:</strong> Issue category and sub-category analysis
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Real-time Processing:</strong> Instant predictions with confidence scores
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-star"></i> CSAT Score Interpretation
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col">
+                        <div class="p-3 rounded" style="background: #e74c3c; color: white;">
+                            <h3>1</h3>
+                            <p class="mb-0">Very Dissatisfied</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 rounded" style="background: #e67e22; color: white;">
+                            <h3>2</h3>
+                            <p class="mb-0">Dissatisfied</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 rounded" style="background: #f39c12; color: white;">
+                            <h3>3</h3>
+                            <p class="mb-0">Neutral</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 rounded" style="background: #2ecc71; color: white;">
+                            <h3>4</h3>
+                            <p class="mb-0">Satisfied</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 rounded" style="background: #27ae60; color: white;">
+                            <h3>5</h3>
+                            <p class="mb-0">Very Satisfied</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i> Technology Stack
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fab fa-python fa-3x text-primary mb-2"></i>
+                        <h6>Python</h6>
+                        <small class="text-muted">Core Language</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-brain fa-3x text-danger mb-2"></i>
+                        <h6>TensorFlow/Keras</h6>
+                        <small class="text-muted">Deep Learning</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-flask fa-3x text-success mb-2"></i>
+                        <h6>Flask</h6>
+                        <small class="text-muted">Web Framework</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-chart-bar fa-3x text-info mb-2"></i>
+                        <h6>Plotly</h6>
+                        <small class="text-muted">Visualization</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-table fa-3x text-warning mb-2"></i>
+                        <h6>Pandas</h6>
+                        <small class="text-muted">Data Processing</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-calculator fa-3x text-primary mb-2"></i>
+                        <h6>NumPy</h6>
+                        <small class="text-muted">Numerical Computing</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-comment fa-3x text-success mb-2"></i>
+                        <h6>TextBlob</h6>
+                        <small class="text-muted">NLP & Sentiment</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-save fa-3x text-secondary mb-2"></i>
+                        <h6>Joblib</h6>
+                        <small class="text-muted">Model Serialization</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-primary">
+            <h5 class="alert-heading"><i class="fas fa-question-circle"></i> Need Help?</h5>
+            <p>For questions, support, or feedback about the CSAT Prediction System:</p>
+            <ul class="mb-0">
+                <li>Download the CSV template from the Bulk Prediction page</li>
+                <li>Review the required columns list before uploading data</li>
+                <li>Ensure date/time fields are properly formatted</li>
+                <li>Check the dashboard for insights and trends</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
