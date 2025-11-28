@@ -45,10 +45,3 @@
 2. Choose the parameters for prediction.
 3. View predicted CSAT scores and insights.
 4. Analyze trends using interactive charts for better decision-making.
-
-## License
-
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International Public License (CC BY-NC 4.0)**.
-
-
-Do you want me to add that?
